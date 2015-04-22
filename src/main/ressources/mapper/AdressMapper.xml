@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ebiz.dao.myBatiss.AdressDao">
+	<resultMap id="AdressResultMap" type="com.ebiz.model.Adress">
+		<id property="id" column="id" />
+		<result property="rue" column="rue" />
+		<result property="city" column="city" />
+		<result property="country" column="country" />
+		<result property="idUser" column="idUser"/>
+	</resultMap>
+
+	<select id="findAll" parameterType="int" resultMap="AdressResultMap">
+		SELECT
+		*
+		FROM Adress a
+		WHERE 
+		a.idUser = #{id}
+	</select>
+
+	<select id="findOne" parameterType="int" resultMap="AdressResultMap">
+		SELECT
+		*
+		FROM
+		Adress a 
+		WHERE a.id = #{id}
+		AND a.idUser = #{idUser}
+	</select>
+
+	<insert id="insert" parameterType="AdressAlias" keyProperty="id">
+		INSERT INTO adress (
+		id, rue, city, country, idUser
+		) VALUES
+		(
+		#{id}, #{rue}, #{city}, #{country}, #{idUser}
+		)
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT
+			LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterType="AdressAlias">
+		UPDATE adress SET
+		rue = #{rue},
+		city = #{city},
+		country = #{country}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="AdressAlias">
+		delete from adress where id
+		= #{id}
+	</delete>
+</mapper>
